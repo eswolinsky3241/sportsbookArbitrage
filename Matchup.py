@@ -1,22 +1,14 @@
 import requests
 from bs4 import BeautifulSoup
-from time import sleep
 
-import requests
-from requests.adapters import HTTPAdapter
-from requests.packages.urllib3.util.retry import Retry
-
-
-session = requests.Session()
-retry = Retry(connect=3, backoff_factor=0.5)
-adapter = HTTPAdapter(max_retries=retry)
-session.mount('http://', adapter)
-session.mount('https://', adapter)
 
 class Matchup:
     def __init__(self):
         self.teamA = ''
         self.teamB = ''
+        self.oddsA = ''
+        self.oddsB = ''
+        self.type = ''
 
     def setTeamA(self, teamA):
         self.teamA = teamA
@@ -24,18 +16,18 @@ class Matchup:
     def setTeamB(self, teamB):
         self.teamB = teamB
 
-    def getTeamA(self):
-        return self.teamA
+    def setOddsA(self, oddsA):
+        self.oddsA = oddsA
 
-    def getTeamB(self):
-        return self.teamB
+    def setOddsB(self, oddsB):
+        self.oddsB = oddsB
+
 
 class Book:
     def __init__(self, url):
         self.url = url
-        self.html = BeautifulSoup(session.get(url).content, 'lxml')
+        self.html = BeautifulSoup(requests.get(url).content, 'lxml')
         self.matchups = ''
-
 
     def getMatchups(self):
 
@@ -43,7 +35,9 @@ class Book:
 
             matchups = []
 
-            # This will be used to assign teams as either A or B. After the loop completes the team variable will be flipped
+            # This will be used to assign teams as either A or B.
+            # After the loop completes the team variable will be flipped
+
             matchupTeam = 1
             matchupInt = 0
 
@@ -54,7 +48,7 @@ class Book:
                         newMatchup = Matchup()
                         newMatchup.setTeamA(team)
                         matchups.append(newMatchup)
-                        ## If matchupTeam = -1, the matchup already exists, and we just need to update it with Team B
+                        # If matchupTeam = -1, the matchup already exists, and we just need to update it with Team B
                     else:
                         matchups[matchupInt].setTeamB(team)
                         matchupInt += 1
