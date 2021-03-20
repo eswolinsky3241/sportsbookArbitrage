@@ -43,16 +43,24 @@ class Book:
             matchupTeam = 1
             matchupInt = 0
 
-            for books in self.html.find_all(attrs={'class': 'sportsbook-table__body'}):
-                for row in books.find_all(attrs={'class': 'event-cell__team-info'}):
-                    team = (row.find(attrs={'class': 'event-cell__name'}).text)
-                    if matchupTeam ==  1:
+            for table in self.html.find_all('tbody'):
+                for row in table.find_all('tr'):
+                    column = row.find_all(attrs={'class':"sportsbook-table__column-row"})
+                    team = row.find(attrs={'class': 'event-cell__name'}).text
+                    moneylineHTML = column[3].find(attrs={'class':'sportsbook-odds american default-color'})
+                    if moneylineHTML is None:
+                        moneyline = ''
+                    else:
+                        moneyline = moneylineHTML.text
+                    if matchupTeam == 1:
                         newMatchup = Matchup()
                         newMatchup.setTeamA(team)
+                        newMatchup.setOddsA(moneyline)
                         matchups.append(newMatchup)
                         # If matchupTeam = -1, the matchup already exists, and we just need to update it with Team B
                     else:
                         matchups[matchupInt].setTeamB(team)
+                        matchups[matchupInt].setOddsB(moneyline)
                         matchupInt += 1
                     matchupTeam *= -1
 
