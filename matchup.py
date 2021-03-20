@@ -29,7 +29,7 @@ class Book:
     def __init__(self, url):
         self.url = url
         self.html = BeautifulSoup(requests.get(url).content, 'lxml')
-        matchups = ''
+        self.matchups = ''
 
     def getMatchups(self):
 
@@ -67,6 +67,7 @@ class Book:
             self.matchups = matchups
 
         elif self.url.startswith('https://sportsbook.fanduel'):
+
             matchups = []
             driver = webdriver.Chrome('/home/ethan/PycharmProjects/sportsbookArbitrage/chromedriver')
             driver.get(self.url)
@@ -75,8 +76,12 @@ class Book:
             for event in self.html.find_all(attrs={'class': 'event'}):
                 newMatchup = Matchup()
                 teams = event.find_all(attrs={'class': 'name'})
+                for price in event.find_all(attrs = {'class':'market money'}):
+                    moneylines = price.find_all(attrs={'class':'selectionprice'})
                 newMatchup.setTeamA(teams[0].text)
                 newMatchup.setTeamB(teams[1].text)
+                newMatchup.setOddsA(moneylines[0].text)
+                newMatchup.setOddsB(moneylines[1].text)
                 matchups.append(newMatchup)
 
             self.matchups = matchups

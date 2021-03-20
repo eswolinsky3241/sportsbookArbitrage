@@ -1,5 +1,5 @@
-from matchup import Book
-
+# arbitrage.py
+# This module is used to match games from Draftkings and Fanduel
 
 class Arb:
     def __init__(self, bookA, bookB):
@@ -27,9 +27,9 @@ class Arb:
         if len(partialPairs) >= 1:
             print(str(len(partialPairs)), ' partial matchup(s) found:\n')
             for i in partialPairs:
-                print('Matchup1:\n ')
-                print(i[0].teamA, ' vs. ', i[0].teamB)
-                print('Matchup2:\n')
+                print('Matchup1: ')
+                print(i[0].teamA, ' vs. ', i[0].teamB,'\n')
+                print('Matchup2:')
                 print(i[1].teamA, ' vs. ', i[1].teamB)
                 print('Are these games the same?(y/n)')
                 user_input = input()
