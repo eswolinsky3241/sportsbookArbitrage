@@ -1,5 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
+import selenium
+from selenium import webdriver
 
 
 class Matchup:
@@ -27,7 +29,7 @@ class Book:
     def __init__(self, url):
         self.url = url
         self.html = BeautifulSoup(requests.get(url).content, 'lxml')
-        self.matchups = ''
+        matchups = ''
 
     def getMatchups(self):
 
@@ -44,7 +46,7 @@ class Book:
             for books in self.html.find_all(attrs={'class': 'sportsbook-table__body'}):
                 for row in books.find_all(attrs={'class': 'event-cell__team-info'}):
                     team = (row.find(attrs={'class': 'event-cell__name'}).text)
-                    if matchupTeam == 1:
+                    if matchupTeam ==  1:
                         newMatchup = Matchup()
                         newMatchup.setTeamA(team)
                         matchups.append(newMatchup)
@@ -57,17 +59,16 @@ class Book:
             self.matchups = matchups
 
         elif self.url.startswith('https://sportsbook.fanduel'):
-
             matchups = []
-            for books in self.html.find_all(attrs={'class':'event'}):
+            driver = webdriver.Chrome('/home/ethan/PycharmProjects/sportsbookArbitrage/chromedriver')
+            driver.get(self.url)
+            self.html = BeautifulSoup(driver.page_source,'html.parser')
+
+            for event in self.html.find_all(attrs={'class': 'event'}):
                 newMatchup = Matchup()
-                teams = books.find_all(attrs={'class':'name'})
-                newMatchup.setTeamA = teams[0]
-                newMatchup.setTeamB = teams[1]
+                teams = event.find_all(attrs={'class': 'name'})
+                newMatchup.setTeamA(teams[0].text)
+                newMatchup.setTeamB(teams[1].text)
                 matchups.append(newMatchup)
 
-
-
-
-
-
+            self.matchups = matchups
