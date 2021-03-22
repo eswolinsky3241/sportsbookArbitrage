@@ -15,6 +15,7 @@ if __name__ == '__main__':
     # get Matchups
     fd.getMatchups()
     dk.getMatchups()
+    # find matchup pairs
     arb = Arb(fd, dk)
     arb.pairMatchups()
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
