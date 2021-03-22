@@ -69,7 +69,7 @@ class Book:
         elif self.url.startswith('https://sportsbook.fanduel'):
 
             matchups = []
-            driver = webdriver.Chrome('/home/ethan/PycharmProjects/sportsbookArbitrage/chromedriver')
+            driver = webdriver.Chrome('./chromedriver')
             driver.get(self.url)
             self.html = BeautifulSoup(driver.page_source,'html.parser')
 
