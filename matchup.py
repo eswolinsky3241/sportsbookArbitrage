@@ -8,7 +8,7 @@ class Matchup:
     def __init__(self):
         self.teamA = ''
         self.teamB = ''
-        self.oddsA = ''
+        self.oddsA = '' 
         self.oddsB = ''
         self.type = ''
 
@@ -27,12 +27,12 @@ class Matchup:
 
 class Book:
     def __init__(self, url):
-        self.url = url
+        self.url = url # URL to scrape
         self.html = BeautifulSoup(requests.get(url).content, 'lxml')
-        self.matchups = ''
+        self.matchups = '' #Will be populated with list of matchup objects
 
-    def getMatchups(self):
-
+    def getMatchups(self): 
+        # Draftkings uses static HTML code
         if self.url.startswith('https://sportsbook.draftkings'):
 
             matchups = []
@@ -66,6 +66,7 @@ class Book:
 
             self.matchups = matchups
 
+        # Fanduel has dynamic web pages, need to use Selenium package with Google Chrome driver to generate the actual HTML for scraping
         elif self.url.startswith('https://sportsbook.fanduel'):
 
             matchups = []
