@@ -1,13 +1,9 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+# sportsbookArbitrage
+# Compare sports matchups in Draftkings and Fanduel to find guaranteed profit opportunities.
 
 from matchup import Book, Matchup
 from arbitrage import Arb
 
-
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     # create sportsbook objects
     fd = Book('https://sportsbook.fanduel.com/sports/navigation/11086.3/11087.3')
@@ -18,4 +14,4 @@ if __name__ == '__main__':
     # find matchup pairs
     arb = Arb(fd, dk)
     arb.pairMatchups()
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+
