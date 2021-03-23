@@ -1,7 +1,10 @@
+# matchup.py
+# This module contains classes for collecting and organizing betting information from platforms
+
 import requests
 from bs4 import BeautifulSoup
-import selenium
 from selenium import webdriver
+from main import convertOdds
 
 
 class Matchup:
@@ -61,13 +64,13 @@ class Book:
                     if matchupTeam == 1:
                         newMatchup = Matchup()
                         newMatchup.setTeamA(team)
-                        newMatchup.setOddsA(moneyline)
+                        newMatchup.setOddsA(convertOdds(moneyline))
                         newMatchup.setCategory(self.category)
                         matchups.append(newMatchup)
                         # If matchupTeam = -1, the matchup already exists, and we just need to update it with Team B
                     else:
                         matchups[matchupInt].setTeamB(team)
-                        matchups[matchupInt].setOddsB(moneyline)
+                        matchups[matchupInt].setOddsB(convertOdds(moneyline))
                         matchupInt += 1
                     matchupTeam *= -1
 
@@ -87,8 +90,8 @@ class Book:
                     moneylines = price.find_all(attrs={'class':'selectionprice'})
                 newMatchup.setTeamA(teams[0].text)
                 newMatchup.setTeamB(teams[1].text)
-                newMatchup.setOddsA(moneylines[0].text)
-                newMatchup.setOddsB(moneylines[1].text)
+                newMatchup.setOddsA(convertOdds(moneylines[0].text))
+                newMatchup.setOddsB(convertOdds(moneylines[1].text))
                 newMatchup.setCategory(self.category)
                 matchups.append(newMatchup)
 

@@ -1,5 +1,5 @@
 # arbitrage.py
-# This module is used to match games from Draftkings and Fanduel
+# This module is used to match games from Draftkings and Fanduel and find arbitrage opportunities
 
 class Arb:
     def __init__(self, bookA, bookB):

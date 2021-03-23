@@ -1,9 +1,7 @@
-# This is a sample Python script.
+# sportsbookArbitrage
+# This program will scrape Draftkings and Fanduel to find opportunities for guaranteed profit
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-from matchup import Book, Matchup
+from matchup import Book
 from arbitrage import Arb
 
 
@@ -13,8 +11,8 @@ def convertOdds(odds):
     else:
         return (100 / -int(odds)) + 1
 
-def getWagerValue(matchupPair):
 
+def getWagerValue(matchupPair):
     if ((convertOdds(matchupPair[0].oddsA) > convertOdds(matchupPair[1].oddsA) and
             convertOdds(matchupPair[1].oddsB) > convertOdds(matchupPair[0].oddsB)) or
             (convertOdds(matchupPair[0].oddsB) > convertOdds(matchupPair[1].oddsB) and
@@ -24,19 +22,16 @@ def getWagerValue(matchupPair):
         return 'False'
 
 
-
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     # create sportsbook objects
-
     # College Basketball
     fd_cbb = Book('Fanduel', 'College Basketball', 'https://sportsbook.fanduel.com/sports/navigation/11086.3/11087.3')
-    dk_cbb = Book('Draftkings', 'College Basketball', 'https://sportsbook.draftkings.com/leagues/basketball/3230960?category=game-lines&subcategory=game')
+    dk_cbb = Book('Draftkings', 'College Basketball',
+                  'https://sportsbook.draftkings.com/leagues/basketball/3230960?category=game-lines&subcategory=game')
 
     # NHL
     fd_nhl = Book('Fanduel', 'NHL', 'https://sportsbook.fanduel.com/sports/navigation/1550.1/10329.3')
     dk_nhl = Book('Draftkings', 'NHL', 'https://sportsbook.fanduel.com/sports/navigation/1550.1/10329.3')
-
 
     # get Matchups
     fd_nhl.getMatchups()
