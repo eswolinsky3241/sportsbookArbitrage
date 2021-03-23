@@ -8,9 +8,10 @@ class Matchup:
     def __init__(self):
         self.teamA = ''
         self.teamB = ''
-        self.oddsA = '' 
+        self.oddsA = ''
         self.oddsB = ''
         self.type = ''
+        self.category = ''
 
     def setTeamA(self, teamA):
         self.teamA = teamA
@@ -24,15 +25,20 @@ class Matchup:
     def setOddsB(self, oddsB):
         self.oddsB = oddsB
 
+    def setCategory(self, category):
+        self.category = category
+
 
 class Book:
-    def __init__(self, url):
-        self.url = url # URL to scrape
+    def __init__(self, name, category, url):
+        self.name = name
+        self.url = url
+        self.category = category
         self.html = BeautifulSoup(requests.get(url).content, 'lxml')
-        self.matchups = '' #Will be populated with list of matchup objects
+        self.matchups = ''
 
-    def getMatchups(self): 
-        # Draftkings uses static HTML code
+    def getMatchups(self):
+
         if self.url.startswith('https://sportsbook.draftkings'):
 
             matchups = []
@@ -56,6 +62,7 @@ class Book:
                         newMatchup = Matchup()
                         newMatchup.setTeamA(team)
                         newMatchup.setOddsA(moneyline)
+                        newMatchup.setCategory(self.category)
                         matchups.append(newMatchup)
                         # If matchupTeam = -1, the matchup already exists, and we just need to update it with Team B
                     else:
@@ -66,11 +73,10 @@ class Book:
 
             self.matchups = matchups
 
-        # Fanduel has dynamic web pages, need to use Selenium package with Google Chrome driver to generate the actual HTML for scraping
         elif self.url.startswith('https://sportsbook.fanduel'):
 
             matchups = []
-            driver = webdriver.Chrome('./chromedriver')
+            driver = webdriver.Chrome('/home/ethan/PycharmProjects/sportsbookArbitrage/chromedriver')
             driver.get(self.url)
             self.html = BeautifulSoup(driver.page_source,'html.parser')
 
@@ -83,6 +89,7 @@ class Book:
                 newMatchup.setTeamB(teams[1].text)
                 newMatchup.setOddsA(moneylines[0].text)
                 newMatchup.setOddsB(moneylines[1].text)
+                newMatchup.setCategory(self.category)
                 matchups.append(newMatchup)
 
             self.matchups = matchups

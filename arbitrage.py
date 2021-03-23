@@ -16,14 +16,14 @@ class Arb:
             for b in self.bookB.matchups:
                 if (a.teamA == b.teamA and a.teamB == b.teamB) or (a.teamA == b.teamB and a.teamB == b.teamA):
                     matchupPairs.append((a, b))
-                #only one team matches
+                # only one team matches
                 elif (a.teamA == b.teamA) or (a.teamB == b.teamB) or (a.teamA == b.teamB) or (a.teamB == b.teamA):
                     partialPairs.append((a, b))
 
         self.matchupPairs = matchupPairs
         self.partialPairs = partialPairs
 
-        # If a partial match is found, confirm with user whether they are the same game
+        # I f a partial match is found, confirm with user whether they are the same game
         if len(partialPairs) >= 1:
             print(str(len(partialPairs)), ' partial matchup(s) found:\n')
             for i in partialPairs:
